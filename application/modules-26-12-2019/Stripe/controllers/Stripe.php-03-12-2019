@@ -1,0 +1,89 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+class Stripe extends MX_Controller {
+	public function __construct() {
+		parent::__construct();
+		$this->load->library("session");
+		$this->load->helper('url');
+		$this->load->helper('common');
+		$this->load->library('form_validation');
+		$this->load->model("Stripe_model");
+		Modules::run('Job/Job_model');
+	}
+	public function index(){
+      if(!empty($this->session->userdata('Session_data'))){
+             $jobid = $this->uri->segment(2);
+			$data['main_content'] = 'index';
+			$data['user'] =getUser();
+			//$data['total_job'] =$this->Dashboard_model->total_job();
+		    $data['jobamount'] =$this->Job_model->getJobsById($jobid);
+			$this->load->view('frontend/frontend-admin-layout.php', $data);
+		}else{
+			redirect('');
+		}
+    }
+       
+    /**
+     * Get All Data from this method.
+     *
+     * @return Response
+    */
+    public function stripePost(){
+	//	$amount  = $this->input->post('amount');
+		$carduserName =$this->input->post('userName');
+		$Job_Id = base64_decode($this->input->post('job_id'));
+		$candidate_id = base64_decode($this->input->post('candidate_id'));
+		//$order_id =$this->Stripe_model->createOrder();
+		
+		$jobDetails =$this->Job_model->getJobsById($this->input->post('job_id'));
+        $amount =$jobDetails['job_amount'];
+        $order_id =$this->Stripe_model->createOrder($amount);
+		if($order_id >0){
+			if($amount!=''){
+			require_once('application/libraries/stripe-php/init.php');
+    
+        \Stripe\Stripe::setApiKey($this->config->item('stripe_secret'));
+     
+			  $charge = \Stripe\Charge::create ([
+                "amount" => $amount * 100,
+                "currency" => "USD",
+                "source" => $this->input->post('stripeToken'),
+                "description" => "Payment from getwork.global" ,
+				 "metadata" => array("order_id" =>$order_id,'carduserName' => $carduserName)
+				]);
+			   $chargeJson = $charge->jsonSerialize();
+					//echo "<pre>"; print_r($chargeJson);
+					//die();				 
+				if($chargeJson!==''){
+				     
+				   	  $order_id_by_Payment = $chargeJson['metadata']['order_id'];
+					  $array_details = array(
+						'carduserName' =>$chargeJson['metadata']['carduserName'],
+						'paid' =>$chargeJson['paid'],
+						'payment_method' =>$chargeJson['payment_method'],
+						'payment_method_details' =>$chargeJson['payment_method_details']
+					
+					);
+					 if($order_id==$order_id_by_Payment){
+						 $transaction_id= $chargeJson['balance_transaction'];
+						 $Result =$this->Stripe_model->update_order($order_id,$transaction_id,$array_details);
+						 if($Result){
+							  //$this->session->set_flashdata('success', 'Payment made successfully.');
+							  redirect('order');
+						 }
+					 }	
+			   } else{
+				   $this->session->set_flashdata('danger', 'Please enter amount1');
+				   redirect('payment/'.base64_encode($this->input->post('job_id')).'/'.base64_encode($this->input->post('candidate_id')));
+			   }
+			}else{
+				 $this->session->set_flashdata('danger', 'Please enter amount');
+				redirect('payment/'.$this->input->post('job_id').'/'.$this->input->post('candidate_id'));
+			}			   
+		}else{
+			
+			redirect('payment/'.$this->input->post('job_id').'/'.$this->input->post('candidate_id'));
+		}
+		
+		}
+}

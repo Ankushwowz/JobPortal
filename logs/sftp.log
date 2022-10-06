@@ -1,0 +1,6 @@
+May 20 11:24:56 10.71.60.0 tmp99290540-8077 Connection from 10.71.60.0 port 25374 on 74.208.59.37 port 22
+May 20 11:24:57 10.71.60.0 tmp99290540-8077 Accepted password for tmp99290540-8077 from 10.71.60.0 port 25374 ssh2
+May 20 11:24:57 10.71.60.0 tmp99290540-8077 Starting session: subsystem 'sftp' for tmp99290540-8077 from 10.71.60.0 port 25374
+May 20 11:24:57 10.71.60.0 tmp99290540-8077 session opened for local user tmp99290540-8077 from [10.71.60.0]
+May 20 11:26:15 10.71.60.0 tmp99290540-1643 Connection from 10.71.60.0 port 16444 on 74.208.59.37 port 22
+May 20 11:26:16 10.71.60.0 tmp99290540-1643 Accepted password for tmp99290540-1643 from 10.71.60.0 port 16444 ssh2

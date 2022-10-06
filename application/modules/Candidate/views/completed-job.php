@@ -1,0 +1,180 @@
+<style>
+@import url(http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+.form-group {
+	text-align:left;
+	}
+fieldset, label {
+	margin: 0;
+	padding: 0;
+	}
+
+
+.rating {
+	border: none;
+	float: right;
+}
+.rating > input {
+	display: none;
+}
+.rating > label:before {
+	margin: 5px;
+	font-size: 1.25em;
+	font-family: FontAwesome;
+	display: inline-block;
+	content: "\f005";
+}
+.rating > .half:before {
+	content: "\f089";
+	position: absolute;
+}
+.rating > label {
+	color: #ddd;
+	float: right;
+}
+ .rating > input:checked ~ label,  .rating:not(:checked) > label:hover,  .rating:not(:checked) > label:hover ~ label {
+color: #FFD700;
+}
+ .rating > input:checked + label:hover,  .rating > input:checked ~ label:hover,  .rating > label:hover ~ input:checked ~ label,  .rating > input:checked ~ label:hover ~ label {
+color: #FFED85;
+}
+
+
+.comment-meta {
+    margin-bottom: 5px;
+    font-size: 13px;
+    color: #535353;
+    font-weight: 500;
+}
+
+.comment-meta a {
+    color: #376bff;
+}
+
+.comment-meta a {
+    margin-left: 20px;
+    font-weight: 600;
+}
+</style>
+<div class="col-lg-9 col-md-12 col-sm-12 col-pad">
+                <div class="content-area5">
+                    <div class="dashboard-content">
+                        <div class="dashboard-header clearfix">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-6"><h4>Completed Jobs</h4></div>
+                                
+                            </div>
+                        </div>
+                        <div class="dashboard-list">
+                            <div class="job-info job-info-2">
+                                <table class="table" id="myTable">
+                                    <thead>
+                                    <tr>
+                                      <?php if($this->session->userdata('Session_data')['role']==1){?>
+										<th>Employer</th>
+									<?php } ?>
+										<?php if($this->session->userdata('Session_data')['role']==2){?>
+										<th>Candidate</th>
+									<?php } ?>
+                                        <th>Job Title</th>
+                                        <th>Category</th>
+										<th class="hdn">Created Date</th>
+                                        <th>Amount</th>
+										<th>Job Status</th>
+										<th>Rating</th>
+										<?php if($this->session->userdata('Session_data')['role']==2){?>
+										<th>Action</th>
+										<?php } ?>
+                                        
+                                    </tr>
+                                    </thead>
+                                    <tbody> 
+									<?php foreach($JobsList as $JobsList){
+									?>
+                                    <tr class="responsive-table" id="job-<?php echo $JobsList['job_id'];?>">
+                                       <td class="p-left-20">
+									   <a  target="_blank" title="<?php echo $JobsList['fullname']?>"  href="<?php echo base_url();?>employer-view-profile/<?php echo base64_encode($JobsList['id']);?>">
+									<?php if(!empty($JobsList['image'])) {?>
+									<img  style="width:50px; height:50px;" src="<?php echo base_url();?>assets/img/profileimage/<?php echo $JobsList['image'];?>" alt="avatar">
+									<?php } else {?>
+									<img  style="width:50px; height:50px;" src="<?php echo base_url();?>assets/img/avatar/avatar-1.jpg" alt="avatar " class="userimage">
+									<?php } ?>
+									 </a>
+									   </td>
+									   
+                                        <td class="p-left-20">
+                                            <div class="inner">
+                                                <h5><a href="<?php echo base_url();?>view-applied-job/<?php echo base64_encode($JobsList['job_id']);?>"><?php echo $JobsList['job_title']?></a></h5>
+                                               
+                                                     <ul>
+                                                   <li><i class="flaticon-time"></i> <?php echo $JobsList['job_type_name']?></li>
+												   <?php if($this->session->userdata('Session_data')['role']==2){ 
+												   	if($JobsList['project_status']!='2'){?>
+												   			<li><div class="comment-meta"><a href="<?php echo base_url();?>payment/<?php echo base64_encode($JobsList['job_id']);?>/<?php echo base64_encode($JobsList['candidate_id']);?>">Fund Transfer</a></div></li>
+												   <?php 	}
+												   	?>
+													
+												
+												<?php } ?>
+                                                </ul>
+												
+												
+												
+												 
+                                            </div>
+                                        </td>
+										<td><?php echo $JobsList['category_name']?></td>
+										<td class="hdn">
+										<?php echo date("M d,Y", strtotime($JobsList['created_at'])); ?></td>
+                                        <td>$<?php echo $JobsList['job_amount']?></td>
+										<td><?php if($JobsList['job_status']==1) {echo "Accepted";}?><?php if($JobsList['job_status']==5) { echo "Completed";}?></td>
+                                         <?php if($this->session->userdata('Session_data')['role']==2){
+											$numRow =  $this->Candidate_model->getrattingByUser($JobsList['job_id']);
+											if($numRow >0){?>
+												<td>
+												<a href="<?php echo base_url();?>view-ratting/<?php echo base64_encode($JobsList['job_id']);?>/<?php echo base64_encode($JobsList['invite_user_id']);?>"><button type="button" class="btn btn-success" rel="<?php echo $JobsList['invite_user_id'];?>" >View Rating</button></a></td><?php 
+											}else{ ?>
+												<td> <a href="<?php echo base_url();?>give-ratting/<?php echo base64_encode($JobsList['job_id']);?>/<?php echo base64_encode($JobsList['invite_user_id']);?>"><button type="button" class="btn btn-primary" rel="<?php echo $JobsList['invite_user_id'];?>" >Give Rating</button></a>
+												</td><?php 
+											}
+										 }
+										 if($this->session->userdata('Session_data')['role']==1){
+											 $numRow =  $this->Candidate_model->getrattingByCanUser($JobsList['job_id']);
+											 if($numRow >0){
+												?>
+											<td> <a href="<?php echo base_url();?>give-ratting/<?php echo base64_encode($JobsList['job_id']);?>/<?php echo base64_encode($JobsList['invite_user_id']);?>"><button type="button" class="btn btn-primary" rel="<?php echo $JobsList['invite_user_id'];?>" >Give Rating</button></a>
+												</td>
+											<?php 
+										 }
+										  $numRow1 =  $this->Candidate_model->ViewrattingByCanUser($JobsList['job_id']);
+										  if($numRow1 >0 ){?>
+										  <td>
+												<a href="<?php echo base_url();?>view-ratting/<?php echo base64_encode($JobsList['job_id']);?>/<?php echo base64_encode($JobsList['invite_user_id']);?>"><button type="button" class="btn btn-success" rel="<?php echo $JobsList['invite_user_id'];?>" >View Rating</button></a></td>
+										  <?php 
+										 }
+										 }
+										 ?>
+										 <?php if($this->session->userdata('Session_data')['role']==2){
+											 $numRow =  $this->Candidate_model->getrattingByUser($JobsList['job_id']);
+											if($numRow==0){  ?>
+                                          <td>
+											<select name="change_job_status" id="change_job_status" class="form-control">
+											<option value="5_<?php echo $JobsList['invite_user_id'];?>">Completed</option>
+												<option value="3_<?php echo $JobsList['invite_user_id'];?>">Processing</option>
+												
+											</select>
+										  
+										  </td>
+										<?php } 
+										 }?>
+										
+                                    </tr><?php 
+									}?>
+                                    
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div>
+            </div>

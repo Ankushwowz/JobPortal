@@ -1,0 +1,50 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Signup extends MX_Controller {
+	
+	public function __construct() {
+       parent::__construct();
+       $this->load->library("session");
+       $this->load->helper('url');
+	   $this->load->library('form_validation');
+	   $this->load->model("Signup_model");
+	   $this->load->module("home");
+	}
+	
+	/**********Signup user ***************/
+	public function index(){
+		
+		if(!empty($_POST['Signup'])){
+			
+			$this->form_validation->set_rules('email', 'Email','trim|valid_email|required|is_unique[users.email]', 
+			array(
+                //'required'      => 'You have not provided %s.',
+                'is_unique'     => 'This %s already exists.please try other email id'
+        ));
+			$this->form_validation->set_rules('password', 'Password', 'required');
+			if($this->form_validation->run() === FALSE){
+				$this->load->view('index');
+			}else{
+				$result = $this->Signup_model->create();
+				if($result){
+					$this->session->set_flashdata('success', 'You account has been created successfully.Now you can login with your vaild credentials');
+					$this->load->view('index');
+				}
+			}			
+		}else{
+			$this->load->view('index');
+		}
+	}
+		
+	/********** End here*************************/
+	
+	
+	public function index1(){
+		//$this->load->view('index');
+		//$data['main_content'] = 'index';
+		//$this->load->view('frontend/layout', $data);
+	}
+	
+	
+}

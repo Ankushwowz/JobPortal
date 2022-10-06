@@ -1,0 +1,54 @@
+<?php
+
+class Stripe_model extends CI_Model{
+
+	function createOrder($amount){
+		$UserData = $this->session->userdata('Session_data');
+		$user_ID = $UserData['id'];
+		//$amount  = $this->input->post('amount');
+		$Job_Id = base64_decode($this->input->post('job_id'));
+		$candidate_id = base64_decode($this->input->post('candidate_id'));
+		
+		$data = array(
+						'job_id' => $Job_Id,
+						'from_user_id' => $user_ID,
+						'to_user_id' => base64_decode($this->input->post('candidate_id')),
+						'amount' => $amount,
+						'created_at' => date('Y-m-d H:i:s')
+						
+					);
+					
+	    $this->db->insert('orders', $data);
+		$orderId =  $this->db->insert_id();
+		if($orderId){$lastid= $orderId;}else{ $lastid= 0;}
+		return $lastid;
+	}
+	
+	function update_order($order_id,$transaction_id,$array_details){
+		$data = array(	'transaction_id' => $transaction_id,
+						'order_status' =>'1',
+						'payment_details' =>json_encode($array_details)
+					);
+		 $this->db->where('order_id', $order_id);
+		$this->db->update('orders', $data);
+
+		//Update Project Status //
+		$this->db->select('orders.job_id');
+		$this->db->where('order_id', $order_id);
+	    $query=$this->db->get('orders');
+        $getResult =  $query->row_array();
+
+        
+	    $dataUpdate = array(
+					'project_status' => '2'
+					);
+		$this->db->where('job_id', $getResult['job_id']);
+		return $this->db->update('job', $dataUpdate);
+
+
+	}
+
+	
+
+}
+?>

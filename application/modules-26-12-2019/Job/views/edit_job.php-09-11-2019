@@ -1,0 +1,113 @@
+<div class="col-lg-9 col-md-12 col-sm-12 col-pad">
+                <div class="content-area5 dashboard-content">
+                    <div class="dashboard-header clearfix">
+                        
+                    </div>
+                    <div class="submit-address dashboard-list">
+					<?php if($this->session->flashdata('success')){  
+						echo '<div class="alert alert-success icons-alert">
+                           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <i class="icofont icofont-close-line-circled"></i>
+                           </button>
+                           
+                           <p class="text-message success-message">'.$this->session->flashdata('success').'</p></div>'; ?>
+                        <?php } ?>
+                      <form  enctype="multipart/form-data" action="<?php echo base_url();?>edit-job/<?php echo $this->uri->segment(2);?>" method="POST" role="form" novalidate="" id="job_post_form">
+                            <h4 class="bg-grea-3">Post Job</h4>
+                            <div class="search-contents-sidebar">
+                                <div class="row pad-20">
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label>Job Title</label>
+                                            <input type="text" class="input-text" name="job_title" placeholder="Your Title"  required="true" value="<?php echo $Jobs['job_title']?>">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label>Job Type</label>
+                                            
+											<select class="form-control search-fields" name="job_type"  required="true">
+                                                <option value="">Job Type</option>
+												<?php foreach($JobType as $JobType) {?>
+                                                <option value="<?php echo $JobType['job_type_id']?>" <?php if($JobType['job_type_id']==$Jobs['job_type']) { echo"selected";}?>><?php echo $JobType['job_type_name']?></option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label>Choose a category</label>
+                                           <select class="form-control search-fields" name="job_category"  required="true">
+                                                <option value="">Job Category</option>
+                                                <?php foreach($JobCategory as $JobCategory) {?>
+                                                <option value="<?php echo $JobCategory['category_id']?>" <?php if($JobCategory['category_id']==$Jobs['job_category']) { echo"selected";}?>><?php echo $JobCategory['category_name']?></option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
+                                    </div>
+									<div class="col-lg-6 col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label>What is your budget for this service?</label>
+                                            <input type="text" class="input-text digits-cls" name="job_amount" placeholder="USD" required="true" value="<?php echo $Jobs['job_amount']?>" maxlength="10" size="10">
+                                        </div>
+                                    </div>
+                                   
+                                    
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label>Job Description</label>
+                                            <textarea id="editor1" class="input-text" name="job_description" placeholder="Detailed Information" required="true"><?php echo $Jobs['job_description']?></textarea>
+                                        </div>
+                                    </div>
+										<div class="col-lg-6">
+                                                    <div class="form-group name">
+                                                        <label>Add Skill</label>
+                                                        <input type="text" id="addSkill" name="addSkill" class="form-control typeahead" placeholder="Add Skill" autocomplete="off" >
+														<input type="hidden" id="skillID" name="skillID" class="form-control">
+                                                    </div>
+													
+                                                </div>
+									<div class="send-btn col-lg-6">
+										<span class="btn btn-md button-theme" name="editjobSkillBtn" value="" id="editjobSkillBtn"> Save Skills</span>
+									</div>
+									
+										<div id="skill-div">
+											<?php if(count($JobSkills) >0){?>
+													<ul class="items-list" id="skill-div-ul">
+													<?php
+													foreach($JobSkills as $JobSkills){?>
+														<li id="jobsskill_<?php echo $JobSkills['job_skill_id'];?>">
+														<span class="title"><?php echo $JobSkills['skill_name'];?> </span> 
+														<!--<span class="edit-language"><i class="fa fa-edit"></i></span>-->
+														<span class="delete-skil delete-icon-btn"><i class="fa fa-trash job-delete-skill" rel="<?php echo $JobSkills['job_skill_id'];?>"></i></span>
+														</li><?php 
+													}?>
+													</ul><?php 
+												}	?>
+										</div>
+                                    <div class="col-lg-6">
+                                        <div class="photoUpload photoUpload-2">
+                                            Upload File
+                                            <input type="file" class="upload" name="userfile">
+                                        </div>
+                                        <div class="post-btn">
+										 <input type="hidden"  name="oldUploadFile" value="<?php if(!empty($Jobs['job_file'])) { echo  $Jobs['job_file'];}?>">
+										 
+										  <input type="hidden" id="jobid"   name="jobid" value="<?php if(!empty($Jobs['job_id'])) { echo  $Jobs['job_id'];}?>">
+										  
+										
+										</div>
+                                    </div>
+									 <div class="col-lg-6">
+									 <input  type="submit" class="btn btn-md button-theme" name="postJob" value="Submit a job">
+									 </div>
+									
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                   
+                </div>
+            </div>
+			

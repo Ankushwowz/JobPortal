@@ -1,0 +1,58 @@
+<?php
+
+class Login_model extends CI_Model{
+
+    function login_user(){
+
+		$encrypt_password = md5($this->input->post('password')); 
+
+		$this->db->select('id,role,email');
+
+		$this->db->where('email', $this->input->post('email'));
+
+		$this->db->where('password', $encrypt_password);
+
+		$result = $this->db->get('users');
+
+		if ($result->num_rows() == 1) {
+
+			$userData = $result->row_array();
+            $data = array(
+            "lastloginstatus" =>1,
+            "lastlogindate" =>date('Y-m-d')
+            
+            
+            );
+            $this->db->where('id', $userData['id']);
+            $this->db->update('users', $data);
+            
+            
+			$Session_data = array(
+
+							"id" =>$userData['id'],
+
+							"role" =>$userData['role'],
+
+							"email" =>$userData['email']
+
+					);
+
+			
+
+			$this->session->set_userdata('Session_data',$Session_data);		
+
+			return 1;
+
+		}else{
+
+			return 0;
+
+		}	
+
+	}
+
+}
+
+
+
+?>

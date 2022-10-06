@@ -1,0 +1,212 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+/*
+| -------------------------------------------------------------------------
+| URI ROUTING
+| -------------------------------------------------------------------------
+| This file lets you re-map URI requests to specific controller functions.
+|
+| Typically there is a one-to-one relationship between a URL string
+| and its corresponding controller class/method. The segments in a
+| URL normally follow this pattern:
+|
+|	example.com/class/method/id/
+|
+| In some instances, however, you may want to remap this relationship
+| so that a different class/function is called than the one
+| corresponding to the URL.
+|
+| Please see the user guide for complete details:
+|
+|	https://codeigniter.com/user_guide/general/routing.html
+|
+| -------------------------------------------------------------------------
+| RESERVED ROUTES
+| -------------------------------------------------------------------------
+|
+| There are three reserved routes:
+|
+|	$route['default_controller'] = 'welcome';
+|
+| This route indicates which controller class should be loaded if the
+| URI contains no data. In the above example, the "welcome" class
+| would be loaded.
+|
+|	$route['404_override'] = 'errors/page_missing';
+|
+| This route will tell the Router which controller/method to use if those
+| provided in the URL cannot be matched to a valid route.
+|
+|	$route['translate_uri_dashes'] = FALSE;
+|
+| This is not exactly a route, but allows you to automatically route
+| controller and method names that contain dashes. '-' isn't a valid
+| class or method name character, so it requires translation.
+| When you set this option to TRUE, it will replace ALL dashes in the
+| controller and method URI segments.
+|
+| Examples:	my-controller/index	-> my_controller/index
+|		my-controller/my-method	-> my_controller/my_method
+*/
+$route['default_controller'] = 'Home';
+$route['home/recentjob'] = 'Home/RecentJobs';
+$route['signup'] = 'Signup';
+$route['login'] = 'Login';
+$route['dashboard'] = 'Dashboard';
+
+
+//$route['message'] = 'Dashboard/message';
+$route['messages'] = 'Message';
+$route['message/getChat'] = 'Message/getChat';
+$route['message/sendChat'] = 'Message/sendChat';
+$route['message/getuserInfo'] = 'Message/getuserInfo';
+$route['message/searchChatUser'] = 'Message/searchChatUser';
+$route['message/uploadfiles'] = 'Message/uploadfiles';
+
+
+$route['order'] = 'Dashboard/order';
+$route['dashboard/getState'] = 'Dashboard/getState';
+$route['dashboard/getCity'] = 'Dashboard/getCity';
+
+$route['logout'] = 'Dashboard/logout';
+$route['change-password'] = 'Password';
+
+$route['edit-profile'] = 'Profile';
+$route['changetagline'] = 'Profile/changetagline';
+$route['profile/getLanguage'] = 'Profile/getLanguage';
+$route['profile/addLanguage'] = 'Profile/addLanguage';
+$route['profile/deleteLanguage'] = 'Profile/deleteLanguage';
+$route['profile/addSkills'] = 'Profile/addSkills';
+$route['profile/deleteskill'] = 'Profile/deleteskill';
+$route['profile/addEducation'] = 'Profile/addEducation';
+$route['profile/deleteEducation'] = 'Profile/deleteEducation';
+$route['profile/addCertificate'] = 'Profile/addCertificate';
+$route['profile/deleteCertification'] = 'Profile/deleteCertification';
+$route['profile/uploadUserImage'] = 'Profile/uploadUserImage';
+$route['profile/getSkill'] = 'Profile/getSkill';
+$route['profile/getSubCategory'] = 'Profile/getSubCategory';
+$route['portfolio'] = 'Profile/portfolio';
+$route['profile/deletePortfolio'] = 'Profile/deletePortfolio';
+
+$route['jobs'] = 'Job/getJobs';
+$route['createjob'] = 'Job/createJob';
+$route['manage-jobs'] = 'Job/jobList';
+$route['edit-job/(:any)'] = 'Job/editJob/$1';
+$route['job/deleteJob'] = 'Job/deleteJob';
+$route['viewjob/(:any)'] = 'Job/viewJob/$1';
+$route['job-details/(:any)'] = 'Job/jobDetail/$1';
+$route['job/addSkills'] = 'Job/addSkills';
+$route['job/deletesJobskill'] = 'Job/deletesJobskill';
+$route['job/editSkills'] = 'Job/editSkills';
+$route['apply-job/(:any)'] = 'Job/jobApplyNow/$1';
+$route['response-job'] = 'Job/ResponseJobs';
+$route['view-response-job/(:any)'] = 'Job/viewParticularResponseJobs/$1';
+$route['applied-job'] = 'Job/AppliedJobs';
+$route['view-applied-job/(:any)'] = 'Job/viewParticularAppliedJobs/$1';
+$route['job/reply-user'] = 'Job/replyUser';
+$route['job/uploadfiles'] = 'Job/uploadfiles';
+
+
+$route['candidate-list'] = 'Candidate/CandidateList';
+$route['view-profile/(:any)'] = 'Candidate/viewProfile/$1';
+$route['invitation'] = 'Candidate/invitationByEmployer';
+$route['candidate/offerAcceptReject'] = 'Candidate/offerAcceptReject';
+$route['accepted-job'] = 'Candidate/acceptedJob';
+$route['rejected-job'] = 'Candidate/rejectedJob';
+
+$route['candidate/completeJob'] = 'Candidate/completeJob';
+$route['completed-job'] = 'Candidate/completedJob';
+$route['assigned-job'] = 'Candidate/assignedJob';
+$route['candidate/resendJob'] = 'Candidate/resendJob';
+$route['candidate/assigned_again'] = 'Candidate/assigned_again';
+$route['candidate/assign_job_by_response'] = 'Candidate/assign_job_by_response';
+
+
+$route['employer-list'] = 'Employer/EmployerList';
+$route['employer-view-profile/(:any)'] = 'Employer/viewProfile/$1';
+$route['employer/sendInvitation'] = 'Employer/sendInvitation';
+$route['invite-user'] = 'Employer/InviteUserForProject';
+$route['view-invite-response-job/(:any)'] = 'Employer/viewInviteParticularResponseJobs/$1';
+
+
+
+$route['give-ratting/(:any)/(:any)'] = 'Candidate/giveRatting/$1/$1';
+$route['candidate/sendRatting'] = 'Candidate/sendRatting';
+$route['view-ratting/(:any)/(:any)'] = 'Candidate/viewRatting/$1/$1';
+
+$route['user-switch'] = 'Dashboard/userSwitch';
+
+//Escrow
+
+$route['escrow/(:any)/(:any)'] = 'Escrow/createPayment/$1/$1';
+$route['escrow-transaction/(:any)/(:any)'] = 'Escrow/escrowTransaction/$1/$1';
+$route['escrow-setting'] = 'Escrow/escrowSetting';
+//Send Email
+
+
+$route['verify-account/(:any)'] = 'Email/verifyaccount/$1';
+$route['forgot-password'] = 'Login/forgotPassword';
+
+/*************Administrator Routes**************/
+$route['administrator'] = 'Administrator';
+$route['admin-dashboard'] = 'Administrator/dashboard';
+$route['users-listing'] = 'Administrator/Userslisting';
+$route['administrator/delete'] = 'Administrator/delete';
+$route['administrator/change_status'] = 'Administrator/change_status';
+$route['profile-edit'] = 'Administrator/EditProfile';
+$route['add-category'] = 'Administrator/AddCategory';
+$route['edit-category/(:any)'] = 'Administrator/EditCategory/$1';
+$route['view-category'] = 'Administrator/ViewCategory';
+$route['administrator/categorydelete'] = 'Administrator/categorydelete';
+$route['add-subcategory'] = 'Administrator/AddSubCategory';
+$route['edit-subcategory/(:any)'] = 'Administrator/EditSubCategory/$1';
+$route['view-subcategory'] = 'Administrator/ViewSubCategory';
+$route['administrator/subcategorydelete'] = 'Administrator/subcategorydelete';
+
+$route['add-page'] = 'Administrator/AddPage';
+$route['view-pages'] = 'Administrator/ViewPages';
+$route['administrator/pagedelete'] = 'Administrator/pagedelete';
+$route['edit-page/(:any)'] = 'Administrator/EditPage/$1';
+
+$route['add-skills'] = 'Administrator/AddSkills';
+$route['view-skills'] = 'Administrator/ViewSkills';
+$route['administrator/skilldelete'] = 'Administrator/skilldelete';
+$route['edit-skill/(:any)'] = 'Administrator/EditSkill/$1';
+
+
+$route['add-language'] = 'Administrator/AddLanguage';
+$route['view-languages'] = 'Administrator/ViewLanguage';
+$route['administrator/languagedelete'] = 'Administrator/languagedelete';
+$route['edit-language/(:any)'] = 'Administrator/EditLanguage/$1';
+$route['administrator/languagedelete'] = 'Administrator/languagedelete';
+
+$route['joblist'] = 'Administrator/Joblist';
+$route['administrator/Change_Jobstatus'] = 'Administrator/Change_Jobstatus';
+$route['view-job/(:any)'] = 'Administrator/Viewjob/$1';
+$route['edit-jobs/(:any)'] = 'Administrator/editJobs/$1';
+
+/*Administrator Accept,Reject, Complete Job List and All Transactions Start here*/
+$route['rejected-jobs'] = 'Administrator/rejectedJobs';
+$route['completed-jobs'] = 'Administrator/completedJobs';
+$route['assigned-jobs'] = 'Administrator/assignedJobs';
+$route['orders'] = 'Administrator/orders';
+/*End Here*/
+
+$route['escrow-settings'] = 'Administrator/escrowSettings';
+$route['commission-setting'] = 'Administrator/commissionSetting';
+$route['apply-commission/(:any)/(:any)/(:any)/(:any)'] = 'Administrator/applyCommission/$1/$1/$1/$1';
+
+
+$route['payment/(:any)/(:any)'] = 'Stripe/index/$1/$1';
+
+$route['stripePost']['post'] = "Stripe/stripePost";
+
+$route['paypal/(:any)'] = 'Paypal/payment/$1';
+$route['payment/success'] = 'Paypal/success';
+$route['payment/cancel'] = 'Paypal/cancel';
+$route['payment/ipn'] = 'Paypal/ipn';
+
+
+$route['404_override'] = '';
+$route['translate_uri_dashes'] = FALSE;
